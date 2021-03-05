@@ -25,7 +25,7 @@ In order to both User and Booking model classes to interact with each other, bot
 - **Model**: it defines your classes business classes
 - **Repository**: it defines all Database operations
 - **Wrapper**: it defines your how your model classes will interact with SQLite
-- **DBFactory**: this is the DB access manager which will provide the resources to access the local DB
+- **DbFactory**: this is the DB access manager which will provide the resources to access the local DB
  
 ### How-to
 
@@ -45,11 +45,6 @@ public class User {
 ```java
 @DbLiteWrapper(entityName = "USER", columns = { "id", "name", "email" })
 public class UserWrapper implements EntityWrapper<User> {
-
-    @Override
-    public Class<?> getDbFactoryClass() {
-        return MyDatabase.class;
-    }
 
     @Override
     public User unWrap(Cursor cursor) {
@@ -76,7 +71,7 @@ public class UserWrapper implements EntityWrapper<User> {
 public class UserRepository extends AbstractRepository<User> {
 
     public UserRepository(Context context) {
-        super(context, new UserWrapper());
+        super(context, new UserWrapper(), MyDatabase.class);
     }
 }
 ```
@@ -91,7 +86,7 @@ public class UserRepository extends AbstractRepository<User> {
 abstract class MyDatabase extends DbLiteFactory {
 
     protected MyDatabase(Context context) {
-        super(context, MyDatabase.class);
+        super(context);
     }
 }
 ```

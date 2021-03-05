@@ -11,11 +11,6 @@ import com.github.petruki.model.Booking;
 public class BookingWrapper implements EntityWrapper<Booking> {
 
     @Override
-    public Class<?> getDbFactoryClass() {
-        return MyDatabase.class;
-    }
-
-    @Override
     public Booking unWrap(Cursor cursor) {
         Booking booking = new Booking();
         booking.setId(cursor.getString(cursor.getColumnIndex("id")));

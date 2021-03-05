@@ -15,7 +15,7 @@ public class BookingRepository extends AbstractRepository<Booking>
     private final UserRepository userRepository;
 
     public BookingRepository(Context context, UserRepository userRepository) {
-        super(context, new BookingWrapper());
+        super(context, new BookingWrapper(), MyDatabase.class);
         this.userRepository = userRepository;
     }
 

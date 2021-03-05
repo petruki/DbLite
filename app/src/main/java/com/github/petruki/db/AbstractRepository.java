@@ -21,10 +21,12 @@ public abstract class AbstractRepository<T> {
 
     protected final Context context;
     protected EntityWrapper<T> wrapper;
+    private final Class<?> dbFactoryClass;
 
-    public AbstractRepository(Context context, EntityWrapper<T> wrapper) {
+    public AbstractRepository(Context context, EntityWrapper<T> wrapper, Class<?> dbFactoryClass) {
         this.context = context;
         this.wrapper = wrapper;
+        this.dbFactoryClass = dbFactoryClass;
     }
 
     private String getTable() {
@@ -33,7 +35,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public void save(T entity) throws Exception {
-        SQLiteDatabase dbWriter = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbWriter();
+        SQLiteDatabase dbWriter = DbLiteFactory.getInstance(context, dbFactoryClass).getDbWriter();
         try {
             dbWriter.insert(getTable(), null, wrapper.wrap(entity));
         } catch (Exception e) {
@@ -43,7 +45,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public void update(String id, T entity) throws Exception {
-        SQLiteDatabase dbWriter = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbWriter();
+        SQLiteDatabase dbWriter = DbLiteFactory.getInstance(context, dbFactoryClass).getDbWriter();
         try {
             dbWriter.update(getTable(), wrapper.wrap(entity),
                     "id = ?", new String[]{ id });
@@ -54,7 +56,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public List<T> findAll() throws Exception {
-        SQLiteDatabase dbReader = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbReader();
+        SQLiteDatabase dbReader = DbLiteFactory.getInstance(context, dbFactoryClass).getDbReader();
         final String sql = String.format("SELECT * FROM %s",  getTable());
 
         List<T> listEntity = new ArrayList<>();
@@ -87,7 +89,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public List<T> find(String whereClause, String[] values, EntityResolver<T> resolver) throws Exception {
-        SQLiteDatabase dbReader = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbReader();
+        SQLiteDatabase dbReader = DbLiteFactory.getInstance(context, dbFactoryClass).getDbReader();
         final String sql = String.format("SELECT * FROM %s WHERE %s", getTable(), whereClause);
 
         List<T> listEntity = new ArrayList<>();
@@ -106,7 +108,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public List<T> find(String whereClause, String[] values) throws Exception {
-        SQLiteDatabase dbReader = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbReader();
+        SQLiteDatabase dbReader = DbLiteFactory.getInstance(context, dbFactoryClass).getDbReader();
         final String sql = String.format("SELECT * FROM %s WHERE %s", getTable(), whereClause);
 
         List<T> listEntity = new ArrayList<>();
@@ -125,7 +127,7 @@ public abstract class AbstractRepository<T> {
     }
 
     public void delete(String whereClause, String[] values) throws Exception {
-        SQLiteDatabase dbWriter = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbWriter();
+        SQLiteDatabase dbWriter = DbLiteFactory.getInstance(context, dbFactoryClass).getDbWriter();
         try {
             dbWriter.delete(getTable(), whereClause, values);
         } catch (Exception e) {

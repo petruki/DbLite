@@ -13,11 +13,6 @@ import com.google.gson.Gson;
 public class UserWrapper implements EntityWrapper<User> {
 
     @Override
-    public Class<?> getDbFactoryClass() {
-        return MyDatabase.class;
-    }
-
-    @Override
     public User unWrap(Cursor cursor) {
         User user = new User();
         user.setId(cursor.getString(cursor.getColumnIndex("id")));

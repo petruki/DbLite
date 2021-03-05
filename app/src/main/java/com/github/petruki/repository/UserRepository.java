@@ -13,7 +13,7 @@ public class UserRepository extends AbstractRepository<User> {
     private final BookingRepository bookingRepository;
 
     public UserRepository(Context context) {
-        super(context, new UserWrapper());
+        super(context, new UserWrapper(), MyDatabase.class);
         bookingRepository = new BookingRepository(context, this);
     }
 

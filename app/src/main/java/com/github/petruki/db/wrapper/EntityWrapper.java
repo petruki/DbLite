@@ -9,13 +9,6 @@ import android.database.Cursor;
 public interface EntityWrapper<T> {
 
     /**
-     * Defines the Database Factory
-     *
-     * @return Implementation of DbLiteFactory
-     */
-    Class<?> getDbFactoryClass();
-
-    /**
      * Unwrap object given the object model type
      */
     T unWrap(Cursor cursor);

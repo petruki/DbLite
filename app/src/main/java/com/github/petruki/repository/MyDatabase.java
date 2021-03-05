@@ -12,6 +12,6 @@ import com.github.petruki.db.DbLiteFactory;
 abstract class MyDatabase extends DbLiteFactory {
 
     protected MyDatabase(Context context) {
-        super(context, MyDatabase.class);
+        super(context);
     }
 }
