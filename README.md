@@ -32,6 +32,66 @@ In order to both User and Booking model classes to interact with each other, bot
 Below is the step-by-step you must follow to implement new Repository classes.
 
 1. Create model class: model/User.java
+```java
+public class User {
+    String _id;
+    String name;
+    String email;
+}
+```
+
+
 2. Create wrapper class: repository/UserWrapper.java
+```java
+@DbLiteWrapper(entityName = "USER", columns = { "id", "name", "email" })
+public class UserWrapper implements EntityWrapper<User> {
+
+    @Override
+    public Class<?> getDbFactoryClass() {
+        return MyDatabase.class;
+    }
+
+    @Override
+    public User unWrap(Cursor cursor) {
+        User user = new User();
+        user.setId(cursor.getString(cursor.getColumnIndex("id")));
+        user.setName(cursor.getString(cursor.getColumnIndex("name")));
+        user.setEmail(cursor.getString(cursor.getColumnIndex("email")));
+        return user;
+    }
+
+    @Override
+    public ContentValues wrap(User user) {
+        ContentValues values = new ContentValues();
+        values.put("id", user.getId());
+        values.put("name", user.getName());
+        values.put("email", user.getEmail());
+        return values;
+    }
+}
+```
+
 3. Create repository class: repository/UserRepository.java
-4. Add wrapper class to DbFactory at db/DbFactory.java - DATABASE_WRAPPERS
+```java
+public class UserRepository extends AbstractRepository<User> {
+
+    public UserRepository(Context context) {
+        super(context, new UserWrapper());
+    }
+}
+```
+
+
+4. Create DB class that configures wrappers and DB arguments (repository/MyDatabase.java)
+```java
+@DbLite(dbName = "BOOKING_DB", version = 1, wrappers = {
+        UserWrapper.class,
+        BookingWrapper.class
+})
+abstract class MyDatabase extends DbLiteFactory {
+
+    protected MyDatabase(Context context) {
+        super(context, MyDatabase.class);
+    }
+}
+```

@@ -1,8 +1,6 @@
 package com.github.petruki.model;
 
-import java.io.Serializable;
-
-public class Plan implements Serializable {
+public class Plan {
 
     private String _id;
     private String name;

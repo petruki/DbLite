@@ -9,14 +9,11 @@ import android.database.Cursor;
 public interface EntityWrapper<T> {
 
     /**
-     * Defines the table name given to the Entity to be saved to SQLite DB
+     * Defines the Database Factory
+     *
+     * @return Implementation of DbLiteFactory
      */
-    String getTableName();
-
-    /**
-     * Defines the create table script
-     */
-    String getCreateTable();
+    Class<?> getDbFactoryClass();
 
     /**
      * Unwrap object given the object model type

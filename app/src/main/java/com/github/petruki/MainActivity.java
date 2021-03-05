@@ -32,14 +32,14 @@ import java.util.List;
  * Model: it defines your classes business classes
  * Repository: it defines all Database operations
  * Wrapper: it defines your how your model classes will interact with SQLite
- * DBFactory: this is the DB access manager which will provide the resources to access the local DB
+ * DbLiteFactory: this is the DB access manager which will provide the resources to access the local DB
  *
  * Below is the step-by-step you must follow to implement new Repository classes.
  *
  * 1. Create model class: model/User.java
  * 2. Create wrapper class: repository/UserWrapper.java
  * 3. Create repository class: repository/UserRepository.java
- * 4. Add wrapper class to DbFactory at db/DbFactory.java - DATABASE_WRAPPERS
+ * 4. Create DB class that configures wrappers and DB arguments (repository/MyDatabase.java)
  *
  * @author Roger Floriano (petruki)
  */

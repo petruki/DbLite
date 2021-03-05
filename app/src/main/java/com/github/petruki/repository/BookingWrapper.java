@@ -3,19 +3,16 @@ package com.github.petruki.repository;
 import android.content.ContentValues;
 import android.database.Cursor;
 
+import com.github.petruki.db.wrapper.DbLiteWrapper;
 import com.github.petruki.db.wrapper.EntityWrapper;
 import com.github.petruki.model.Booking;
 
+@DbLiteWrapper(entityName = "BOOKING", columns = { "id", "contactId" })
 public class BookingWrapper implements EntityWrapper<Booking> {
 
     @Override
-    public String getTableName() {
-        return "BOOKING";
-    }
-
-    @Override
-    public String getCreateTable() {
-        return String.format("CREATE TABLE %s (id, contactId, contact)", getTableName());
+    public Class<?> getDbFactoryClass() {
+        return MyDatabase.class;
     }
 
     @Override

@@ -5,6 +5,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
+import com.github.petruki.db.wrapper.DbLiteWrapper;
 import com.github.petruki.db.wrapper.EntityResolver;
 import com.github.petruki.db.wrapper.EntityWrapper;
 
@@ -26,10 +27,15 @@ public abstract class AbstractRepository<T> {
         this.wrapper = wrapper;
     }
 
+    private String getTable() {
+        DbLiteWrapper dbWrapperAnnotation = wrapper.getClass().getAnnotation(DbLiteWrapper.class);
+        return dbWrapperAnnotation.entityName();
+    }
+
     public void save(T entity) throws Exception {
-        SQLiteDatabase dbWriter = DbFactory.getInstance(context).getDbWriter();
+        SQLiteDatabase dbWriter = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbWriter();
         try {
-            dbWriter.insert(wrapper.getTableName(), null, wrapper.wrap(entity));
+            dbWriter.insert(getTable(), null, wrapper.wrap(entity));
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             throw new Exception("Failed to save", e);
@@ -37,9 +43,9 @@ public abstract class AbstractRepository<T> {
     }
 
     public void update(String id, T entity) throws Exception {
-        SQLiteDatabase dbWriter = DbFactory.getInstance(context).getDbWriter();
+        SQLiteDatabase dbWriter = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbWriter();
         try {
-            dbWriter.update(wrapper.getTableName(), wrapper.wrap(entity),
+            dbWriter.update(getTable(), wrapper.wrap(entity),
                     "id = ?", new String[]{ id });
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
@@ -48,8 +54,8 @@ public abstract class AbstractRepository<T> {
     }
 
     public List<T> findAll() throws Exception {
-        SQLiteDatabase dbReader = DbFactory.getInstance(context).getDbReader();
-        final String sql = String.format("SELECT * FROM %s",  wrapper.getTableName());
+        SQLiteDatabase dbReader = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbReader();
+        final String sql = String.format("SELECT * FROM %s",  getTable());
 
         List<T> listEntity = new ArrayList<>();
         try (Cursor cursor = dbReader.rawQuery(sql, null)) {
@@ -81,8 +87,8 @@ public abstract class AbstractRepository<T> {
     }
 
     public List<T> find(String whereClause, String[] values, EntityResolver<T> resolver) throws Exception {
-        SQLiteDatabase dbReader = DbFactory.getInstance(context).getDbReader();
-        final String sql = String.format("SELECT * FROM %s WHERE %s", wrapper.getTableName(), whereClause);
+        SQLiteDatabase dbReader = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbReader();
+        final String sql = String.format("SELECT * FROM %s WHERE %s", getTable(), whereClause);
 
         List<T> listEntity = new ArrayList<>();
         try (Cursor cursor = dbReader.rawQuery(sql, values)) {
@@ -100,8 +106,8 @@ public abstract class AbstractRepository<T> {
     }
 
     public List<T> find(String whereClause, String[] values) throws Exception {
-        SQLiteDatabase dbReader = DbFactory.getInstance(context).getDbReader();
-        final String sql = String.format("SELECT * FROM %s WHERE %s", wrapper.getTableName(), whereClause);
+        SQLiteDatabase dbReader = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbReader();
+        final String sql = String.format("SELECT * FROM %s WHERE %s", getTable(), whereClause);
 
         List<T> listEntity = new ArrayList<>();
         try (Cursor cursor = dbReader.rawQuery(sql, values)) {
@@ -119,9 +125,9 @@ public abstract class AbstractRepository<T> {
     }
 
     public void delete(String whereClause, String[] values) throws Exception {
-        SQLiteDatabase dbWriter = DbFactory.getInstance(context).getDbWriter();
+        SQLiteDatabase dbWriter = com.github.petruki.db.DbLiteFactory.getInstance(context, wrapper.getDbFactoryClass()).getDbWriter();
         try {
-            dbWriter.delete(wrapper.getTableName(), whereClause, values);
+            dbWriter.delete(getTable(), whereClause, values);
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
             throw new Exception("Failed to delete", e);
