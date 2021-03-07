@@ -3,8 +3,8 @@ package com.github.petruki.repository;
 import android.content.ContentValues;
 import android.database.Cursor;
 
-import com.github.petruki.db.wrapper.DbLiteWrapper;
-import com.github.petruki.db.wrapper.EntityWrapper;
+import com.github.petruki.dblite.wrapper.DbLiteWrapper;
+import com.github.petruki.dblite.wrapper.EntityWrapper;
 import com.github.petruki.model.Plan;
 import com.github.petruki.model.User;
 import com.google.gson.Gson;

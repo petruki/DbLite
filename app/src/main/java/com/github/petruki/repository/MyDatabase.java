@@ -2,8 +2,8 @@ package com.github.petruki.repository;
 
 import android.content.Context;
 
-import com.github.petruki.db.DbLite;
-import com.github.petruki.db.DbLiteFactory;
+import com.github.petruki.dblite.DbLite;
+import com.github.petruki.dblite.DbLiteFactory;
 
 @DbLite(dbName = "BOOKING_DB", version = 1, wrappers = {
         UserWrapper.class,

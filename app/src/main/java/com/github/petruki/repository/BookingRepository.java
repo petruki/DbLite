@@ -2,8 +2,8 @@ package com.github.petruki.repository;
 
 import android.content.Context;
 
-import com.github.petruki.db.AbstractRepository;
-import com.github.petruki.db.wrapper.EntityResolver;
+import com.github.petruki.dblite.AbstractRepository;
+import com.github.petruki.dblite.wrapper.EntityResolver;
 import com.github.petruki.model.Booking;
 import com.github.petruki.model.User;
 

@@ -37,5 +37,7 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    implementation 'com.github.petruki:dblite-library:0.1.1-rc'
     implementation 'com.google.code.gson:gson:2.8.6'
+//    implementation(name:'dblite-1.0-rc', ext:'aar')
 }
